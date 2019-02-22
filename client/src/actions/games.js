@@ -88,13 +88,14 @@ export const updateGame = (gameId, board) => (dispatch, getState) => {
 }
 
 export const gameEnded = (gameId, board) => (dispatch, getState) => {
+  console.log('called in games.js')
   const state = getState()
   const jwt = state.currentUser.jwt
 
   if (isExpired(jwt)) return dispatch(logout())
 
   request
-    .patch(`${baseUrl}/games/${gameId}`)
+    .patch(`${baseUrl}/games/ended${gameId}`)
     .set('Authorization', `Bearer ${jwt}`)
     .send({ board })
     .then(_ => dispatch(gameEndedSuccess()))

@@ -23,8 +23,9 @@ export default (state = null, {type, payload}) => {
         [payload.id]: payload
       }
 
-    case GAME_ENDED_SUCCESS:
-      return {
+      case GAME_ENDED_SUCCESS:
+      console.log('payload.id', payload.id)
+        return {
         ...state,
         [payload.id]: payload
       }

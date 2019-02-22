@@ -19,25 +19,36 @@ class GameDetails extends PureComponent {
   }
 
   joinGame = () => this.props.joinGame(this.props.game.id)
+  bomb = {
+    x: Math.floor(Math.random() * 3),
+    y: Math.floor(Math.random() * 3)
+  }
 
   makeMove = (toRow,toCell) => {
+    const { gameEnded, game } = this.props
+    console.log(gameEnded)
+    console.log(toRow,toCell)
     const pos = {x: toRow, y: toCell}
-    const bomb = {
-      x: Math.floor(Math.random() * 3),
-      y: Math.floor(Math.random() * 3)
-    }
-    console.log('bX,bY:',bomb.x, bomb.y)
-    if (pos.x === bomb.x && pos.y === bomb.y ) {
+    console.log('bX,bY:',this.bomb.x, this.bomb.y)
+    if (pos.x === this.bomb.x && pos.y === this.bomb.y ) {
       console.log('boom')
-      const game = this.props.game
-      const loser = game.turn
-      console.log(loser)
-      console.log(game.id)
-      gameEnded(this.props.game.turn, this.props.game.id)
+      // const game = this.props.game
+      // const loser = game.turn
+      // console.log(loser)
+      // console.log(game.id)
+      console.log('gon call the func')
+      console.log('loser',this.props.game.turn,'gameid', this.props.game.id)
+      
+      
+      gameEnded(game.id, game.board)
+
+
+    } else {
+        console.log('hey this is else')      
     }
     //game over
     // if (toRow)
-    const {game, updateGame} = this.props
+    const { updateGame} = this.props
     const board = game.board.map(
       (row, rowIndex) => row.map((cell, cellIndex) => {
         if (rowIndex === toRow && cellIndex === toCell) return game.turn
@@ -106,7 +117,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  getGames, getUsers, joinGame, updateGame
+  getGames, getUsers, joinGame, updateGame, gameEnded
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameDetails)

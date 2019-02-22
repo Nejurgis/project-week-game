@@ -116,55 +116,36 @@ export default class GameController {
     return game
   }
 
-  @Authorized()
+  // @Authorized()
   // the reason that we're using patch here is because this request is not idempotent
   // http://restcookbook.com/HTTP%20Methods/idempotency/
   // try to fire the same requests twice, see what happens
-  @Patch('/games/:id([0-9]+)')
+  @Patch('/games/ended:id([0-9]+)')
   async gameEnded(
     @CurrentUser() user: User,
     @Param('id') gameId: number,
-    // @Body() update: GameUpdate
+    @Body() update: GameUpdate
   ) {
-    console.log(user, "USER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
     const game = await Game.findOneById(gameId)
-    // if (!game) throw new NotFoundError(`Game does not exist`)
-
-    const player = await Player.findOne({ user, game })
-    console.log(game, "GAME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    // console.log('Game ID!!!!!', gameId)
+    console.log('GameEEEEEEE !!!!!', game)
     
-    console.log(player, "PLAYER NAME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    
+    if(game){
+      game.winner = game.turn
+      game.status = 'finished'
+      console.log('finished!!!!!!!!!!!!!!!!!!!!!!!!!!!!', game.status)
+      game.board = update.board
+      await game.save()
+    }
 
-    // if (!player) throw new ForbiddenError(`You are not part of this game`)
-    // if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
-    // if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    // if (!isValidTransition(player.symbol, game.board, update.board)) {
-      // throw new BadRequestError(`Invalid move`)
-    // }    
-    
-    // const winner = calculateWinner(update.board)
+    io.emit('action', {
+      type: 'GAME_ENDED_SUCCESS',
+      payload: game
+    })
+    console.log('socketIO')
 
-
-    // if (player/) {
-    //   game.winner = winner
-    //   game.status = 'finished'
-    // }
-    // else if (finished(update.board)) {
-    //   game.status = 'finished'
-    // }
-    // else {
-    //   game.turn = player.symbol === 'flo' ? 'b' : 'flo'
-    // }
-    // game.board = update.board
-    // await game.save()
-    
-    // io.emit('action', {
-    //   type: 'UPDATE_GAME',
-    //   payload: game
-    // })
-
-    // return game
+    return game
   }
 
 
