@@ -44,7 +44,7 @@ class GameDetails extends PureComponent {
       gameEnded,
       game
     } = this.props
-    console.log(gameEnded)
+    // console.log(gameEnded)
     console.log(toRow, toCell)
     const pos = {
       x: toRow,
@@ -52,9 +52,10 @@ class GameDetails extends PureComponent {
     }
     console.log('bX,bY:', this.bomb.x, this.bomb.y)
     if (pos.x === this.bomb.x && pos.y === this.bomb.y) {
-      console.log('boom')
-      console.log('gon call the func')
+      // console.log('boom')
+      // console.log('gon call the func')
       gameEnded(game.id, game.board)
+      return (alert('end of game'))
     } else {
       const {
         updateGame

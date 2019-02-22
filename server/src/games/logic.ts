@@ -5,7 +5,7 @@ import { Board, Symbol, Row } from './entities'
 export class IsBoard implements ValidatorConstraintInterface {
 
   validate(board: Board) {
-    const symbols = [ 'flo', 'b', null ]
+    const symbols = [ 'No', 'Nop', null ]
     return board.length === 3 &&
       board.every(row =>
         row.length === 3 &&
