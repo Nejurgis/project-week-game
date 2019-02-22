@@ -54,8 +54,8 @@ class GameDetails extends PureComponent {
 
       <p>Status: {game.status}</p>
 
-      {
-        game.status === 'started' &&
+     {
+         game.status === 'started' &&
         player && player.symbol === game.turn &&
         <div>It's your turn!</div>
       }
@@ -68,7 +68,7 @@ class GameDetails extends PureComponent {
 
       {
         winner &&
-        <p>Winner: {users[winner].firstName}</p>
+        <p>Loser: {users[winner].firstName}</p>
       }
 
       <hr />
