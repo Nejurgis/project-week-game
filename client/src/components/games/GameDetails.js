@@ -44,7 +44,7 @@ class GameDetails extends PureComponent {
       gameEnded,
       game
     } = this.props
-    // console.log(gameEnded)
+    console.log(gameEnded)
     console.log(toRow, toCell)
     const pos = {
       x: toRow,
@@ -52,10 +52,9 @@ class GameDetails extends PureComponent {
     }
     console.log('bX,bY:', this.bomb.x, this.bomb.y)
     if (pos.x === this.bomb.x && pos.y === this.bomb.y) {
-      // console.log('boom')
-      // console.log('gon call the func')
+      console.log('boom')
+      console.log('gon call the func')
       gameEnded(game.id, game.board)
-      
     } else {
       const {
         updateGame
@@ -95,13 +94,10 @@ class GameDetails extends PureComponent {
       .map(p => p.userId)[0]
 
     return ( < Paper className = "outer-paper" >
-      <
-      h1 > Game# {
-        game.id
-      } < /h1>
+      < h1 >  < /h1>
 
       <
-      p > Status: {
+      p > Game is {
         game.status
       } < /p>
 
@@ -109,7 +105,7 @@ class GameDetails extends PureComponent {
         game.status === 'started' &&
           player && player.symbol === game.turn &&
           <
-          div > It 's your turn!</div>
+          div > it s your turn to shoot </div>
       }
 
       {
@@ -124,9 +120,9 @@ class GameDetails extends PureComponent {
       {
         winner &&
           <
-          p > Loser: {
+          p > {
             users[winner].firstName
-          } < /p>
+          } died!! OMG T.T < /p>
       }
 
       <
