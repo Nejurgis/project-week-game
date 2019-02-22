@@ -55,7 +55,7 @@ class GameDetails extends PureComponent {
       // console.log('boom')
       // console.log('gon call the func')
       gameEnded(game.id, game.board)
-      return (alert('end of game'))
+      
     } else {
       const {
         updateGame
